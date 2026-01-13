@@ -3,11 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Yisus perfumes — Boutique de Lujo</title>
+  <title>Yisus Perfumes — Boutique de Lujo</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Poppins:wght@300;600&display=swap" rel="stylesheet">
   <style>
     :root {
-      --accent: #d4af37; /* Dorado de lujo */
+      --accent: #d4af37; /* Dorado */
       --bg-dark: #000000;
       --card-bg: #0a0a0a;
       --text: #f5f5f5;
@@ -18,136 +19,166 @@
 
     body {
       margin: 0;
-      background: #000;
+      background: var(--bg-dark);
       color: var(--text);
-      font-family: "Segoe UI", Roboto, sans-serif;
+      font-family: 'Poppins', sans-serif;
     }
 
-    /* CABECERA CON LOGO GRANDE */
-    .hero-header {
-      text-align: center;
-      padding: 3rem 1rem;
+    /* BARRA SUPERIOR (MENÚ TRES PUNTOS) */
+    .nav-header {
+      display: flex;
+      justify-content: flex-end;
+      padding: 20px;
+      position: absolute;
+      width: 100%;
+      box-sizing: border-box;
+      z-index: 1000;
+    }
+
+    .menu-dots {
+      cursor: pointer;
+      font-size: 1.8rem;
+      color: var(--accent);
+      transition: 0.3s;
+      padding: 10px;
+      opacity: 0.7;
+    }
+
+    .menu-dots:hover { opacity: 1; transform: scale(1.1); }
+
+    .dropdown {
+      position: absolute;
+      right: 20px;
+      top: 65px;
+      background: #111;
+      border: 1px solid #333;
+      border-radius: 12px;
+      display: none;
+      flex-direction: column;
+      min-width: 180px;
+      overflow: hidden;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.8);
+    }
+
+    .dropdown.show { display: flex; }
+
+    .dropdown-item {
+      padding: 15px 20px;
+      color: #fff;
+      text-decoration: none;
+      font-size: 0.9rem;
+      cursor: pointer;
+      border-bottom: 1px solid #222;
+      transition: 0.3s;
+    }
+
+    .dropdown-item:hover { background: var(--accent); color: #000; }
+
+    /* SECCIÓN HERO - LOGO GRANDE Y CENTRADO */
+    .hero {
+      height: 85vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
       background: radial-gradient(circle, #1a1a1a 0%, #000 100%);
+      padding: 20px;
+      text-align: center;
       border-bottom: 1px solid #222;
     }
 
     .main-logo {
-      width: 100%;
-      max-width: 450px; /* Tamaño grande para el logo */
-      height: auto;
-      border-radius: 15px;
-      box-shadow: 0 0 30px rgba(212, 175, 55, 0.2);
-      margin-bottom: 1rem;
+      width: 320px; /* Tamaño del logo */
+      height: 320px;
+      object-fit: contain;
+      border-radius: 50%;
+      border: 3px solid var(--accent);
+      padding: 10px;
+      box-shadow: 0 0 50px rgba(212, 175, 55, 0.3);
+      margin-bottom: 2rem;
+      animation: fadeIn 2s ease-in-out;
     }
 
     .brand-title {
-      font-size: 2.5rem;
-      font-style: italic;
-      font-weight: bold;
+      font-family: 'Cinzel', serif;
+      font-size: 3.5rem;
+      font-weight: 700;
+      letter-spacing: 8px;
       color: #fff;
+      margin: 0;
       text-transform: uppercase;
-      letter-spacing: 5px;
-      margin: 10px 0;
     }
 
-    .topbar {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 15px;
-      padding: 1rem;
-      background: rgba(0,0,0,0.9);
-      border-bottom: 1px solid #333;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      backdrop-filter: blur(10px);
-    }
-
-    .tab {
-      padding: .7rem 1.8rem;
-      border: 1px solid #444;
-      border-radius: 50px;
-      cursor: pointer;
-      background: transparent;
-      color: #888;
-      transition: 0.3s;
-      font-weight: 600;
-      font-size: 0.9rem;
-    }
-
-    .tab.active {
-      border-color: var(--accent);
+    .brand-subtitle {
       color: var(--accent);
-      background: rgba(212, 175, 55, 0.1);
+      letter-spacing: 5px;
+      font-size: 1rem;
+      margin-top: 10px;
+      font-weight: 300;
     }
 
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    /* CONTENIDO PRINCIPAL */
     main {
       max-width: 1200px;
       margin: 0 auto;
-      padding: 2rem 1.5rem;
+      padding: 4rem 1.5rem;
     }
 
-    .hidden { display: none; }
+    .hidden { display: none !important; }
 
+    /* CARDS */
     .cards {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 2.5rem;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 3rem;
     }
 
     .product {
       background: var(--card-bg);
-      border-radius: 1rem;
+      border-radius: 20px;
       overflow: hidden;
-      border: 1px solid #222;
+      border: 1px solid #1a1a1a;
       transition: 0.4s;
     }
 
-    .product:hover {
-      transform: translateY(-10px);
-      border-color: var(--accent);
-    }
+    .product:hover { border-color: var(--accent); transform: translateY(-10px); }
 
-    .product img {
-      width: 100%;
-      height: 350px;
-      object-fit: cover;
-    }
-
-    .product .info { padding: 1.5rem; }
+    .img-container { height: 400px; background: #000; }
+    .product img { width: 100%; height: 100%; object-fit: cover; }
     
-    .product h4 { margin: 0.5rem 0; font-size: 1.4rem; color: #fff; }
-
-    .price { font-size: 1.3rem; color: var(--accent); margin-bottom: 1rem; font-weight: bold; }
+    .product .info { padding: 2rem; }
+    .family-tag { color: var(--accent); font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; }
+    .price { font-size: 1.6rem; color: #fff; font-weight: 600; margin: 10px 0; }
 
     .btn {
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
-      padding: .8rem;
-      border-radius: .5rem;
+      gap: 10px;
+      padding: 1rem;
+      border-radius: 12px;
       cursor: pointer;
-      border: none;
-      font-weight: 700;
+      font-weight: 600;
       transition: 0.3s;
-      width: 100%;
-      margin-top: 10px;
       text-decoration: none;
-      box-sizing: border-box;
+      border: none;
+      width: 100%;
     }
 
     .btn.ws { background: var(--whatsapp); color: #fff; }
-    .btn.fb-share { background: var(--facebook); color: #fff; margin-bottom: 15px; }
-    .btn.edit { background: #333; color: #fff; }
-    .btn.delete { background: var(--danger); color: #fff; }
-    .btn.save { background: var(--accent); color: #000; font-size: 1.1rem; }
+    .btn.fb { background: var(--facebook); color: #fff; max-width: 250px; margin: 2rem auto; }
+    .btn.admin { background: var(--accent); color: #000; margin-top: 15px; }
 
+    /* FORMULARIOS */
     .card-form {
-      background: #111;
+      background: #0a0a0a;
       padding: 2.5rem;
-      border-radius: 1.5rem;
+      border-radius: 20px;
       max-width: 500px;
       margin: 0 auto;
       border: 1px solid #333;
@@ -156,9 +187,9 @@
     input, textarea, select {
       width: 100%;
       margin-bottom: 1.2rem;
-      padding: .9rem;
-      border-radius: .5rem;
-      border: 1px solid #333;
+      padding: 1rem;
+      border-radius: 8px;
+      border: 1px solid #222;
       background: #000;
       color: #fff;
       box-sizing: border-box;
@@ -166,215 +197,174 @@
 
     footer {
       text-align: center;
-      padding: 4rem 1rem;
-      border-top: 1px solid #222;
+      padding: 5rem 1rem;
       background: #050505;
-    }
-
-    .social-links {
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-      margin: 20px 0;
-    }
-
-    .social-icon {
-      color: #fff;
-      font-size: 2rem;
-      transition: 0.3s;
-    }
-
-    .social-icon:hover { color: var(--accent); }
-
-    .family-tag {
-      font-size: 0.7rem;
-      background: rgba(212, 175, 55, 0.2);
-      color: var(--accent);
-      padding: 4px 10px;
-      border-radius: 4px;
-      text-transform: uppercase;
+      color: #444;
+      font-size: 0.8rem;
     }
   </style>
 </head>
 <body>
 
-  <header class="hero-header">
-    <img src="http://googleusercontent.com/image_generation_content/0.png" alt="Yisus Perfumes Logo" class="main-logo">
-    <div class="brand-title">Yisus perfumes</div>
-    <p style="color: var(--accent); letter-spacing: 3px;">LA ESENCIA DE LA ELEGANCIA</p>
-  </header>
+  <nav class="nav-header">
+    <div class="menu-dots" id="menu-trigger">
+        <i class="fa-solid fa-ellipsis-vertical"></i>
+    </div>
+    <div class="dropdown" id="dropdown-menu">
+        <div class="dropdown-item" id="nav-catalog"><i class="fa-solid fa-gem"></i> Catálogo</div>
+        <div class="dropdown-item" id="nav-login"><i class="fa-solid fa-user-shield"></i> Administración</div>
+        <div class="dropdown-item hidden" id="nav-logout" style="color:var(--danger)"><i class="fa-solid fa-power-off"></i> Cerrar Sesión</div>
+    </div>
+  </nav>
 
-  <header class="topbar">
-    <button class="tab active" id="tab-clientes">Catálogo</button>
-    <button class="tab" id="tab-vendedor">Vendedor</button>
+  <header class="hero">
+    <img src="https://via.placeholder.com/600/000000/d4af37?text=YISUS" alt="Yisus Perfumes Logo" class="main-logo">
+    <h1 class="brand-title">Yisus Perfumes</h1>
+    <p class="brand-subtitle">LA ESENCIA DE LA EXCLUSIVIDAD</p>
   </header>
 
   <main>
     <section id="view-clientes">
-      <button class="btn fb-share" id="btn-share-fb">
-        <i class="fa-brands fa-facebook-f"></i> Compartir Catálogo en Facebook
+      <button class="btn fb" onclick="compartir()">
+        <i class="fa-brands fa-facebook"></i> Compartir Catálogo
       </button>
-
       <div id="catalog" class="cards"></div>
-      <div id="empty" class="hidden" style="text-align:center; padding: 5rem;">
-        <p style="color:#444;">No hay fragancias registradas.</p>
-      </div>
     </section>
 
-    <section id="login-vendedor" class="hidden">
+    <section id="login-section" class="hidden">
       <div class="card-form">
-        <h2 style="text-align:center">Acceso Administrativo</h2>
-        <input id="login-user" placeholder="Usuario" />
-        <input id="login-pass" type="password" placeholder="Contraseña" />
-        <button id="btn-login" class="btn save">Entrar</button>
-        <p id="login-error" style="color: var(--danger); text-align:center; margin-top:1rem;"></p>
+        <h2 style="text-align:center; margin-bottom:2rem;">Acceso Privado</h2>
+        <input id="user" type="text" placeholder="Usuario" />
+        <input id="pass" type="password" placeholder="Contraseña" />
+        <button id="btn-login" class="btn admin">Ingresar al Panel</button>
       </div>
     </section>
 
     <section id="view-vendedor" class="hidden">
       <div class="card-form">
-        <h2 id="form-title" style="text-align:center">Gestión de Producto</h2>
-        <label>Nombre del Perfume</label>
-        <input id="p-name" />
-        <label>Precio</label>
-        <input id="p-price" type="number" />
-        <label>Familia</label>
+        <h2 id="form-title" style="text-align:center">Registrar Fragancia</h2>
+        <input id="p-name" placeholder="Nombre del perfume" />
+        <input id="p-price" type="number" placeholder="Precio ($)" />
         <select id="p-family">
           <option value="Amaderada">Amaderada</option>
           <option value="Cítrica">Cítrica</option>
           <option value="Floral">Floral</option>
           <option value="Oriental">Oriental</option>
         </select>
-        <label>Descripción</label>
-        <textarea id="p-desc" rows="3"></textarea>
-        <label>Imagen del Producto</label>
+        <textarea id="p-desc" rows="3" placeholder="Descripción de notas..."></textarea>
+        <p style="font-size:0.7rem; color:var(--accent)">Sube una foto del producto:</p>
         <input id="p-img" type="file" accept="image/*" />
-        <button id="btn-save" class="btn save">Guardar Cambios</button>
+        <button id="btn-save" class="btn admin">Guardar Producto</button>
       </div>
     </section>
   </main>
 
   <footer>
-    <div class="social-links">
-      <a href="https://www.facebook.com/share/1BxACj97vk/?mibextid=wwXIfr" target="_blank" class="social-icon">
-        <i class="fa-brands fa-facebook"></i>
-      </a>
-    </div>
-    <p style="color: #666;">Yisus Perfumes &copy; 2026</p>
+    <p>YISUS PERFUMES &copy; 2026 | MÉXICO</p>
   </footer>
 
   <script>
-    const MI_TELEFONO = "521234567890"; // Cambia por tu número real
-    const MI_FACEBOOK = "https://www.facebook.com/share/1BxACj97vk/?mibextid=wwXIfr";
-    
-    let perfumes = JSON.parse(localStorage.getItem("perfumes")||"[]");
-    let editingIndex = null;
+    const MI_TELEFONO = "521234567890";
+    const FB_LINK = "https://www.facebook.com/share/1BxACj97vk/?mibextid=wwXIfr";
+    let perfumes = JSON.parse(localStorage.getItem("perfumes") || "[]");
+    let isAdmin = false;
+    let editIndex = null;
 
-    function renderCatalog(){
-      const c = document.getElementById("catalog");
-      const empty = document.getElementById("empty");
-      const isVendedor = !document.getElementById("view-vendedor").classList.contains("hidden");
-      
-      c.innerHTML = "";
-      if(perfumes.length === 0){
-        empty.classList.remove("hidden");
-        return;
-      }
-      empty.classList.add("hidden");
+    // MENÚ DROPDOWN
+    const trigger = document.getElementById("menu-trigger");
+    const menu = document.getElementById("dropdown-menu");
 
-      perfumes.forEach((p, i) => {
-        const textWS = encodeURIComponent(`Hola Yisus Perfumes, me interesa el perfume *${p.name}* ($${p.price} MXN).`);
-        const urlWS = `https://wa.me/${MI_TELEFONO}?text=${textWS}`;
+    trigger.onclick = (e) => { e.stopPropagation(); menu.classList.toggle("show"); };
+    document.onclick = () => menu.classList.remove("show");
 
-        const card = document.createElement("div");
-        card.className = "product";
-        card.innerHTML = `
-          <img src="${p.img || 'https://via.placeholder.com/600x800?text=Fragancia'}" alt="${p.name}">
-          <div class="info">
-            <span class="family-tag">${p.family}</span>
-            <h4>${p.name}</h4>
-            <div class="price">$${Number(p.price).toLocaleString('es-MX')} MXN</div>
-            <p style="color:#888; font-size:0.9rem;">${p.desc}</p>
-            ${isVendedor ? `
-              <button class="btn edit" onclick="editPerfume(${i})">Editar</button>
-              <button class="btn delete" onclick="deletePerfume(${i})">Eliminar</button>
-            ` : `
-              <a href="${urlWS}" target="_blank" class="btn ws">
-                <i class="fa-brands fa-whatsapp"></i> Comprar por WhatsApp
-              </a>
-            `}
-          </div>`;
-        c.appendChild(card);
-      });
+    // NAVEGACIÓN
+    function show(id) {
+        ["view-clientes", "login-section", "view-vendedor"].forEach(s => document.getElementById(s).classList.add("hidden"));
+        document.getElementById(id).classList.remove("hidden");
     }
 
-    // Compartir en Facebook
-    document.getElementById("btn-share-fb").addEventListener("click", () => {
-      const shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(MI_FACEBOOK)}`;
-      window.open(shareUrl, 'facebook-share-dialog', 'width=800,height=600');
-    });
+    document.getElementById("nav-catalog").onclick = () => show("view-clientes");
+    document.getElementById("nav-login").onclick = () => isAdmin ? show("view-vendedor") : show("login-section");
 
-    function savePerfume(){
-      const name = document.getElementById("p-name").value;
-      const price = document.getElementById("p-price").value;
-      if(!name || !price) return alert("Nombre y precio obligatorios");
+    // LOGIN
+    document.getElementById("btn-login").onclick = () => {
+        if(document.getElementById("user").value === "Yisus_2637422" && document.getElementById("pass").value === "Yisus_2637422") {
+            isAdmin = true;
+            document.getElementById("nav-logout").classList.remove("hidden");
+            document.getElementById("nav-login").innerText = "Gestionar Catálogo";
+            show("view-vendedor");
+            render();
+        } else alert("Error");
+    };
 
-      const file = document.getElementById("p-img").files[0];
-      const finalizar = (imgData) => {
-        const data = { 
-            name, price, 
-            family: document.getElementById("p-family").value, 
-            desc: document.getElementById("p-desc").value, 
-            img: imgData 
+    document.getElementById("nav-logout").onclick = () => location.reload();
+
+    // RENDERIZAR
+    function render() {
+        const cat = document.getElementById("catalog");
+        cat.innerHTML = "";
+        perfumes.forEach((p, i) => {
+            const card = document.createElement("div");
+            card.className = "product";
+            card.innerHTML = `
+                <div class="img-container"><img src="${p.img || 'https://via.placeholder.com/500x600?text=Fragancia'}"></div>
+                <div class="info">
+                    <span class="family-tag">${p.family}</span>
+                    <h3 style="margin:5px 0">${p.name}</h3>
+                    <div class="price">$${Number(p.price).toLocaleString()}</div>
+                    <p style="font-size:0.8rem; color:#888; height:40px; overflow:hidden">${p.desc}</p>
+                    ${isAdmin ? `
+                        <div style="display:flex; gap:10px; margin-top:15px">
+                            <button class="btn" style="background:#222; color:#fff" onclick="edit(${i})">Editar</button>
+                            <button class="btn" style="background:#300; color:#f55" onclick="del(${i})">Borrar</button>
+                        </div>
+                    ` : `
+                        <a href="https://wa.me/${MI_TELEFONO}?text=Deseo+el+perfume+${p.name}" target="_blank" class="btn ws">
+                            <i class="fa-brands fa-whatsapp"></i> Comprar
+                        </a>
+                    `}
+                </div>`;
+            cat.appendChild(card);
+        });
+    }
+
+    // CRUD
+    document.getElementById("btn-save").onclick = () => {
+        const name = document.getElementById("p-name").value;
+        const price = document.getElementById("p-price").value;
+        const file = document.getElementById("p-img").files[0];
+
+        const save = (imgData) => {
+            const p = { name, price, family: document.getElementById("p-family").value, desc: document.getElementById("p-desc").value, img: imgData };
+            if(editIndex !== null) perfumes[editIndex] = p;
+            else perfumes.push(p);
+            localStorage.setItem("perfumes", JSON.stringify(perfumes));
+            location.reload();
         };
-        if(editingIndex !== null) perfumes[editingIndex] = data;
-        else perfumes.push(data);
-        localStorage.setItem("perfumes", JSON.stringify(perfumes));
-        location.reload();
-      };
 
-      if(file){
-        const r = new FileReader();
-        r.onload = e => finalizar(e.target.result);
-        r.readAsDataURL(file);
-      } else finalizar(editingIndex !== null ? perfumes[editingIndex].img : "");
-    }
-
-    window.editPerfume = (i) => {
-      editingIndex = i;
-      const p = perfumes[i];
-      document.getElementById("view-vendedor").classList.remove("hidden");
-      document.getElementById("p-name").value = p.name;
-      document.getElementById("p-price").value = p.price;
-      document.getElementById("p-family").value = p.family;
-      document.getElementById("p-desc").value = p.desc;
-      window.scrollTo(0,0);
+        if(file) {
+            const r = new FileReader();
+            r.onload = e => save(e.target.result);
+            r.readAsDataURL(file);
+        } else save(editIndex !== null ? perfumes[editIndex].img : "");
     };
 
-    window.deletePerfume = (i) => {
-      if(confirm("¿Eliminar fragancia?")){
-        perfumes.splice(i, 1);
-        localStorage.setItem("perfumes", JSON.stringify(perfumes));
-        renderCatalog();
-      }
+    window.edit = (i) => {
+        editIndex = i;
+        const p = perfumes[i];
+        document.getElementById("p-name").value = p.name;
+        document.getElementById("p-price").value = p.price;
+        document.getElementById("p-family").value = p.family;
+        document.getElementById("p-desc").value = p.desc;
+        document.getElementById("form-title").innerText = "Editando...";
     };
 
-    document.getElementById("btn-save").addEventListener("click", savePerfume);
-    document.getElementById("btn-login").addEventListener("click", () => {
-      if(document.getElementById("login-user").value === "vendedor" && document.getElementById("login-pass").value === "1234"){
-        document.getElementById("login-vendedor").classList.add("hidden");
-        document.getElementById("view-vendedor").classList.remove("hidden");
-        renderCatalog();
-      } else alert("Error de acceso");
-    });
+    window.del = (i) => { if(confirm("¿Eliminar?")) { perfumes.splice(i,1); localStorage.setItem("perfumes", JSON.stringify(perfumes)); render(); } };
 
-    document.getElementById("tab-clientes").addEventListener("click", () => location.reload());
-    document.getElementById("tab-vendedor").addEventListener("click", () => {
-      document.getElementById("view-clientes").classList.add("hidden");
-      document.getElementById("login-vendedor").classList.remove("hidden");
-    });
+    function compartir() { window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(FB_LINK)}`, '_blank'); }
 
-    renderCatalog();
+    render();
   </script>
 </body>
 </html>
+
