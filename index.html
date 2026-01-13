@@ -52,6 +52,7 @@
       flex-direction: column;
       min-width: 180px;
       box-shadow: 0 15px 35px rgba(0,0,0,0.8);
+      z-index: 2000;
     }
 
     .dropdown.show { display: flex; }
@@ -77,38 +78,32 @@
       border-bottom: 1px solid #222;
     }
 
-    /* LOGO "YP" ENTRELAZADO Y CURSIVO */
     .logo-circle {
-      width: 320px;
-      height: 320px;
-      border: 3px solid var(--accent);
+      width: 340px;
+      height: 340px;
+      border: 2px solid var(--accent);
       border-radius: 50%;
       display: flex;
       justify-content: center;
       align-items: center;
       margin-bottom: 2rem;
-      box-shadow: 0 0 60px rgba(212, 175, 55, 0.2);
-      animation: fadeIn 1.5s ease-in-out;
-      background: rgba(0,0,0,0.6);
+      box-shadow: 0 0 60px rgba(212, 175, 55, 0.15);
+      background: rgba(0,0,0,0.4);
+      position: relative;
     }
 
     .monogram {
-      font-family: 'Great Vibes', cursive; /* Fuente cursiva */
-      font-size: 11rem;
+      font-family: 'Great Vibes', cursive;
+      font-size: 13rem;
       color: var(--accent);
       display: flex;
       line-height: 1;
-      text-shadow: 3px 3px 15px rgba(0,0,0,0.8);
+      position: relative;
+      user-select: none;
     }
 
-    .monogram span.y {
-      transform: translateX(25px); /* Mueve la Y hacia la derecha */
-    }
-
-    .monogram span.p {
-      transform: translateX(-25px); /* Mueve la P hacia la izquierda para entrelazar */
-      opacity: 0.9;
-    }
+    .monogram span.y { transform: translateX(35px); z-index: 1; }
+    .monogram span.p { transform: translateX(-35px); z-index: 2; text-shadow: -8px 0 15px rgba(0,0,0,0.7); }
 
     .brand-title {
       font-family: 'Cinzel', serif;
@@ -127,35 +122,33 @@
       margin-top: 10px;
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: scale(0.8); }
-      to { opacity: 1; transform: scale(1); }
-    }
-
-    /* RESTO DEL ESTILO */
     main { max-width: 1200px; margin: 0 auto; padding: 4rem 1.5rem; }
     .hidden { display: none !important; }
     .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 3rem; }
+    
     .product { background: var(--card-bg); border-radius: 20px; overflow: hidden; border: 1px solid #1a1a1a; transition: 0.4s; }
     .product:hover { border-color: var(--accent); transform: translateY(-10px); }
-    .img-container { height: 400px; background: #000; }
+    
+    .img-container { height: 400px; background: #000; overflow: hidden; }
     .product img { width: 100%; height: 100%; object-fit: cover; }
+    
     .product .info { padding: 2rem; }
     .family-tag { color: var(--accent); font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; }
     .price { font-size: 1.6rem; color: #fff; font-weight: 600; margin: 10px 0; }
 
     .btn { display: flex; align-items: center; justify-content: center; gap: 10px; padding: 1rem; border-radius: 12px; cursor: pointer; font-weight: 600; text-decoration: none; border: none; width: 100%; transition: 0.3s;}
     .btn.ws { background: var(--whatsapp); color: #fff; }
-    .btn.fb { background: var(--facebook); color: #fff; max-width: 250px; margin: 2rem auto; }
+    .btn.fb { background: var(--facebook); color: #fff; max-width: 250px; margin: 0 auto 3rem; }
     .btn.admin { background: var(--accent); color: #000; margin-top: 15px; }
 
     .card-form { background: #0a0a0a; padding: 2.5rem; border-radius: 20px; max-width: 500px; margin: 0 auto; border: 1px solid #333; }
     input, textarea, select { width: 100%; margin-bottom: 1.2rem; padding: 1rem; border-radius: 8px; border: 1px solid #222; background: #000; color: #fff; box-sizing: border-box; }
+    
     footer { text-align: center; padding: 5rem 1rem; background: #050505; color: #444; font-size: 0.8rem; }
 
     @media (max-width: 600px) {
-        .logo-circle { width: 220px; height: 220px; }
-        .monogram { font-size: 7rem; }
+        .logo-circle { width: 240px; height: 240px; }
+        .monogram { font-size: 8rem; }
         .brand-title { font-size: 2rem; }
     }
   </style>
@@ -165,9 +158,9 @@
   <nav class="nav-header">
     <div class="menu-dots" id="menu-trigger"><i class="fa-solid fa-ellipsis-vertical"></i></div>
     <div class="dropdown" id="dropdown-menu">
-        <div class="dropdown-item" id="nav-catalog">Catálogo</div>
-        <div class="dropdown-item" id="nav-login">Administración</div>
-        <div class="dropdown-item hidden" id="nav-logout" style="color:var(--danger)">Cerrar Sesión</div>
+        <div class="dropdown-item" onclick="show('view-clientes')">Ver Catálogo</div>
+        <div class="dropdown-item" onclick="isAdmin ? show('view-vendedor') : show('login-section')">Administración</div>
+        <div class="dropdown-item hidden" id="nav-logout" style="color:var(--danger)" onclick="logout()">Cerrar Sesión</div>
     </div>
   </nav>
 
@@ -193,24 +186,26 @@
         <h2 style="text-align:center;">Acceso Privado</h2>
         <input id="user" type="text" placeholder="Usuario" />
         <input id="pass" type="password" placeholder="Contraseña" />
-        <button id="btn-login" class="btn admin">Ingresar</button>
+        <button onclick="login()" class="btn admin">Ingresar</button>
       </div>
     </section>
 
     <section id="view-vendedor" class="hidden">
       <div class="card-form">
         <h2 id="form-title" style="text-align:center">Registrar Fragancia</h2>
-        <input id="p-name" placeholder="Nombre" />
-        <input id="p-price" type="number" placeholder="Precio ($)" />
+        <input id="p-name" placeholder="Nombre de la fragancia" />
+        <input id="p-price" type="number" placeholder="Precio (ej: 1200)" />
         <select id="p-family">
           <option value="Amaderada">Amaderada</option>
           <option value="Cítrica">Cítrica</option>
           <option value="Floral">Floral</option>
           <option value="Oriental">Oriental</option>
         </select>
-        <textarea id="p-desc" rows="3" placeholder="Descripción..."></textarea>
+        <textarea id="p-desc" rows="3" placeholder="Notas de salida, corazón y fondo..."></textarea>
+        <p style="font-size: 0.8rem; color: var(--accent); margin-bottom: 5px;">Imagen del perfume:</p>
         <input id="p-img" type="file" accept="image/*" />
-        <button id="btn-save" class="btn admin">Guardar Producto</button>
+        <button onclick="saveProduct()" class="btn admin">Guardar en Catálogo</button>
+        <button onclick="show('view-clientes')" class="btn" style="background:transparent; color:#888; margin-top:10px;">Cancelar</button>
       </div>
     </section>
   </main>
@@ -218,35 +213,35 @@
   <footer><p>YISUS PERFUMES &copy; 2026 | MÉXICO</p></footer>
 
   <script>
-    const MI_TELEFONO = "521234567890";
+    const MI_TELEFONO = "4436965926";
     const FB_LINK = "https://www.facebook.com/share/1BxACj97vk/?mibextid=wwXIfr";
+    
     let perfumes = JSON.parse(localStorage.getItem("perfumes") || "[]");
     let isAdmin = false;
     let editIndex = null;
 
-    const trigger = document.getElementById("menu-trigger");
+    // Menú
     const menu = document.getElementById("dropdown-menu");
-    trigger.onclick = (e) => { e.stopPropagation(); menu.classList.toggle("show"); };
+    document.getElementById("menu-trigger").onclick = (e) => { e.stopPropagation(); menu.classList.toggle("show"); };
     document.onclick = () => menu.classList.remove("show");
 
     function show(id) {
-        ["view-clientes", "login-section", "view-vendedor"].forEach(s => document.getElementById(s).classList.add("hidden"));
-        document.getElementById(id).classList.remove("hidden");
+        document.querySelectorAll('main > section').forEach(s => s.classList.add('hidden'));
+        document.getElementById(id).classList.remove('hidden');
+        if(id === 'view-clientes') render();
     }
 
-    document.getElementById("nav-catalog").onclick = () => show("view-clientes");
-    document.getElementById("nav-login").onclick = () => isAdmin ? show("view-vendedor") : show("login-section");
-
-    document.getElementById("btn-login").onclick = () => {
-        if(document.getElementById("user").value === "Yisus_2637422" && document.getElementById("pass").value === "Yisus_2637422") {
+    function login() {
+        const u = document.getElementById("user").value;
+        const p = document.getElementById("pass").value;
+        if(u === "Yisus_2637422" && p === "Yisus_2637422") {
             isAdmin = true;
             document.getElementById("nav-logout").classList.remove("hidden");
             show("view-vendedor");
-            render();
-        } else alert("Error");
-    };
+        } else alert("Datos incorrectos");
+    }
 
-    document.getElementById("nav-logout").onclick = () => location.reload();
+    function logout() { location.reload(); }
 
     function render() {
         const cat = document.getElementById("catalog");
@@ -254,45 +249,103 @@
         perfumes.forEach((p, i) => {
             const card = document.createElement("div");
             card.className = "product";
+            // Corrección de precio: Asegurar que sea número
+            const displayPrice = Number(p.price).toLocaleString('es-MX', { style: 'currency', currency: 'MXN' });
+            
             card.innerHTML = `
-                <div class="img-container"><img src="${p.img || 'https://via.placeholder.com/500x600?text=Fragancia'}"></div>
+                <div class="img-container">
+                    <img src="${p.img || 'https://via.placeholder.com/500x600?text=YISUS+PERFUMES'}">
+                </div>
                 <div class="info">
                     <span class="family-tag">${p.family}</span>
-                    <h3>${p.name}</h3>
-                    <div class="price">$${Number(p.price).toLocaleString()}</div>
-                    <p style="font-size:0.8rem; color:#888;">${p.desc}</p>
-                    ${isAdmin ? `<div style="display:flex; gap:10px; margin-top:15px"><button class="btn" style="background:#222; color:#fff" onclick="edit(${i})">Editar</button><button class="btn" style="background:#300; color:#f55" onclick="del(${i})">Borrar</button></div>` : 
-                    `<a href="https://wa.me/${MI_TELEFONO}?text=Deseo+el+perfume+${p.name}" target="_blank" class="btn ws">Comprar</a>`}
+                    <h3 style="margin:5px 0">${p.name}</h3>
+                    <div class="price">${displayPrice}</div>
+                    <p style="font-size:0.8rem; color:#888; margin-bottom:15px;">${p.desc}</p>
+                    ${isAdmin ? `
+                        <div style="display:flex; gap:10px;">
+                            <button class="btn" style="background:#222; color:#fff" onclick="prepareEdit(${i})">Editar</button>
+                            <button class="btn" style="background:#300; color:#f55" onclick="deleteProduct(${i})">Borrar</button>
+                        </div>
+                    ` : `
+                        <a href="https://wa.me/${MI_TELEFONO}?text=Hola! Me interesa la fragancia: ${p.name}" target="_blank" class="btn ws">
+                            <i class="fa-brands fa-whatsapp"></i> Comprar
+                        </a>
+                    `}
                 </div>`;
             cat.appendChild(card);
         });
     }
 
-    document.getElementById("btn-save").onclick = () => {
-        const file = document.getElementById("p-img").files[0];
-        const save = (imgData) => {
-            const p = { name: document.getElementById("p-name").value, price: document.getElementById("p-price").value, family: document.getElementById("p-family").value, desc: document.getElementById("p-desc").value, img: imgData };
-            if(editIndex !== null) perfumes[editIndex] = p; else perfumes.push(p);
-            localStorage.setItem("perfumes", JSON.stringify(perfumes));
-            location.reload();
-        };
-        if(file) { const r = new FileReader(); r.onload = e => save(e.target.result); r.readAsDataURL(file); } else save(editIndex !== null ? perfumes[editIndex].img : "");
-    };
+    function saveProduct() {
+        const name = document.getElementById("p-name").value;
+        const price = document.getElementById("p-price").value;
+        const family = document.getElementById("p-family").value;
+        const desc = document.getElementById("p-desc").value;
+        const fileInput = document.getElementById("p-img");
 
-    window.edit = (i) => {
+        if(!name || !price) return alert("Nombre y precio son obligatorios");
+
+        const processSave = (imgBase64) => {
+            const newPerfume = { name, price: parseFloat(price), family, desc, img: imgBase64 };
+            
+            if(editIndex !== null) {
+                perfumes[editIndex] = newPerfume;
+                editIndex = null;
+            } else {
+                perfumes.push(newPerfume);
+            }
+            
+            localStorage.setItem("perfumes", JSON.stringify(perfumes));
+            alert("Catálogo actualizado con éxito");
+            resetForm();
+            show('view-clientes');
+        };
+
+        if(fileInput.files[0]) {
+            const reader = new FileReader();
+            reader.onload = (e) => processSave(e.target.result);
+            reader.readAsDataURL(fileInput.files[0]);
+        } else {
+            // Si no hay imagen nueva, conservar la anterior si es edición
+            const oldImg = (editIndex !== null) ? perfumes[editIndex].img : "";
+            processSave(oldImg);
+        }
+    }
+
+    function prepareEdit(i) {
         editIndex = i;
         const p = perfumes[i];
         document.getElementById("p-name").value = p.name;
         document.getElementById("p-price").value = p.price;
         document.getElementById("p-family").value = p.family;
         document.getElementById("p-desc").value = p.desc;
+        document.getElementById("form-title").innerText = "Editando Producto";
         show("view-vendedor");
-    };
+    }
 
-    window.del = (i) => { if(confirm("¿Eliminar?")) { perfumes.splice(i,1); localStorage.setItem("perfumes", JSON.stringify(perfumes)); render(); } };
+    function deleteProduct(i) {
+        if(confirm("¿Seguro que quieres eliminar esta fragancia?")) {
+            perfumes.splice(i, 1);
+            localStorage.setItem("perfumes", JSON.stringify(perfumes));
+            render();
+        }
+    }
+
+    function resetForm() {
+        document.getElementById("p-name").value = "";
+        document.getElementById("p-price").value = "";
+        document.getElementById("p-desc").value = "";
+        document.getElementById("p-img").value = "";
+        document.getElementById("form-title").innerText = "Registrar Fragancia";
+    }
+
     function compartir() { window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(FB_LINK)}`, '_blank'); }
+
+    // Carga inicial
     render();
   </script>
 </body>
 </html>
+
+
 
