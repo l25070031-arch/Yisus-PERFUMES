@@ -12,59 +12,40 @@
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Great+Vibes&family=Poppins:wght@300;600&display=swap" rel="stylesheet">
   
   <style>
-    :root {
-      --accent: #d4af37;
-      --bg-dark: #000000;
-      --card-bg: #0a0a0a;
-      --text: #f5f5f5;
-      --whatsapp: #25d366;
-      --danger: #e74c3c;
-    }
-
-    body { margin: 0; background: var(--bg-dark); color: var(--text); font-family: 'Poppins', sans-serif; overflow-x: hidden; }
-
-    /* NAVEGACIÓN */
+    :root { --accent: #d4af37; --bg-dark: #000; --card-bg: #0a0a0a; --text: #f5f5f5; --whatsapp: #25d366; --danger: #e74c3c; }
+    body { margin: 0; background: var(--bg-dark); color: var(--text); font-family: 'Poppins', sans-serif; }
     .nav-header { display: flex; justify-content: flex-end; padding: 20px; position: absolute; width: 100%; box-sizing: border-box; z-index: 1000; }
     .menu-dots { cursor: pointer; font-size: 1.8rem; color: var(--accent); padding: 10px; }
     .dropdown { position: absolute; right: 20px; top: 65px; background: #111; border: 1px solid #333; border-radius: 12px; display: none; flex-direction: column; min-width: 200px; box-shadow: 0 15px 35px rgba(0,0,0,0.8); z-index: 2000; }
     .dropdown.show { display: flex; }
     .dropdown-item { padding: 15px 20px; color: #fff; cursor: pointer; border-bottom: 1px solid #222; font-size: 0.9rem; }
-    .dropdown-item:hover { background: var(--accent); color: #000; }
-
-    /* HERO */
     .hero { height: 60vh; display: flex; flex-direction: column; justify-content: center; align-items: center; background: radial-gradient(circle, #1a1a1a 0%, #000 100%); text-align: center; border-bottom: 1px solid #222; }
     .logo-circle { width: 220px; height: 220px; border: 2px solid var(--accent); border-radius: 50%; display: flex; justify-content: center; align-items: center; position: relative; box-shadow: 0 0 30px rgba(212, 175, 55, 0.2); }
     .monogram { font-family: 'Great Vibes', cursive; font-size: 9rem; color: var(--accent); display: flex; line-height: 1; }
     .monogram span.y { transform: translateX(20px); }
     .monogram span.p { transform: translateX(-20px); text-shadow: -5px 0 10px #000; }
-
-    /* FILTROS */
-    .filter-container { display: flex; justify-content: center; gap: 10px; margin: 30px 0; flex-wrap: wrap; padding: 0 10px; }
-    .filter-btn { background: transparent; border: 1px solid #333; color: #888; padding: 8px 20px; border-radius: 20px; cursor: pointer; transition: 0.3s; }
+    .filter-container { display: flex; justify-content: center; gap: 10px; margin: 30px 0; flex-wrap: wrap; }
+    .filter-btn { background: transparent; border: 1px solid #333; color: #888; padding: 8px 20px; border-radius: 20px; cursor: pointer; }
     .filter-btn.active { border-color: var(--accent); color: var(--accent); }
-
-    /* CATALOGO */
-    main { max-width: 1200px; margin: 0 auto; padding: 20px; min-height: 40vh; }
+    main { max-width: 1200px; margin: 0 auto; padding: 20px; }
     .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; }
-    .product { background: var(--card-bg); border-radius: 15px; overflow: hidden; border: 1px solid #1a1a1a; transition: 0.3s; position: relative; }
-    .img-box { height: 350px; background: #000; overflow: hidden; }
+    .product { background: var(--card-bg); border-radius: 15px; overflow: hidden; border: 1px solid #1a1a1a; transition: 0.3s; }
+    .img-box { height: 350px; background: #000; }
     .img-box img { width: 100%; height: 100%; object-fit: cover; }
     .info { padding: 20px; }
-
-    .btn { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 12px; border-radius: 10px; cursor: pointer; font-weight: 600; text-decoration: none; border: none; width: 100%; margin-top: 10px; font-family: 'Poppins', sans-serif; }
-    .btn-ws { background: var(--whatsapp); color: #fff; }
-    .btn-del { background: var(--danger); color: #fff; }
-    
+    .btn { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 12px; border-radius: 10px; cursor: pointer; font-weight: 600; border: none; width: 100%; margin-top: 10px; color: #fff; text-decoration: none; }
     .hidden { display: none !important; }
-
-    /* FORMULARIO VENTANA VENDEDOR */
-    .card-form { background: #0a0a0a; padding: 2rem; border-radius: 15px; max-width: 500px; margin: 20px auto; border: 1px solid #333; }
+    .card-form { background: #0a0a0a; padding: 2rem; border-radius: 15px; max-width: 500px; margin: 0 auto; border: 1px solid #333; }
     input, textarea, select { width: 100%; margin-bottom: 1rem; padding: 12px; border-radius: 8px; border: 1px solid #222; background: #000; color: #fff; box-sizing: border-box; }
-    
-    footer { text-align: center; padding: 40px; color: #444; font-size: 0.8rem; border-top: 1px solid #111; margin-top: 50px; }
+    #loading-overlay { position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); display:flex; flex-direction:column; justify-content:center; align-items:center; z-index:9999; }
   </style>
 </head>
 <body>
+
+  <div id="loading-overlay" class="hidden">
+    <div style="color:var(--accent); font-size:2rem;"><i class="fas fa-spinner fa-spin"></i></div>
+    <p>Subiendo fragancia... un momento</p>
+  </div>
 
   <nav class="nav-header">
     <div class="menu-dots" id="menu-trigger"><i class="fa-solid fa-ellipsis-vertical"></i></div>
@@ -76,11 +57,8 @@
   </nav>
 
   <header class="hero">
-    <div class="logo-circle">
-        <div class="monogram"><span class="y">Y</span><span class="p">P</span></div>
-    </div>
-    <h1 style="font-family: 'Cinzel'; letter-spacing: 5px; color: white; margin: 0;">Yisus Perfumes</h1>
-    <p style="color: var(--accent); letter-spacing: 3px; font-size: 0.8rem; margin-top: 10px;">BOUTIQUE EXCLUSIVA</p>
+    <div class="logo-circle"><div class="monogram"><span class="y">Y</span><span class="p">P</span></div></div>
+    <h1 style="font-family:'Cinzel'; color:white; margin:0;">Yisus Perfumes</h1>
   </header>
 
   <main>
@@ -96,27 +74,23 @@
 
     <section id="view-vendedor" class="hidden">
       <div class="card-form">
-        <h2 style="text-align:center; color:var(--accent); margin-top: 0;">Publicar Fragancia</h2>
-        <input id="p-name" placeholder="Nombre del perfume" />
+        <h2 style="text-align:center; color:var(--accent)">Publicar Fragancia</h2>
+        <input id="p-name" placeholder="Nombre" />
         <input id="p-price" type="number" placeholder="Precio ($)" />
         <select id="p-gender">
             <option value="Caballero">Caballero</option>
             <option value="Dama">Dama</option>
             <option value="Sobre Pedido">Sobre Pedido</option>
         </select>
-        <textarea id="p-desc" placeholder="Descripción y notas olfativas..."></textarea>
-        <p style="font-size: 0.8rem; color: var(--accent); margin-bottom: 5px;">Seleccionar imagen:</p>
+        <textarea id="p-desc" placeholder="Descripción..."></textarea>
         <input id="p-img" type="file" accept="image/*" />
-        <button onclick="subirTienda()" class="btn" style="background:var(--accent); color:black;">Publicar en Catálogo</button>
+        <button onclick="procesarYSubir()" class="btn" style="background:var(--accent); color:black;">Compartir en Catálogo</button>
         <button onclick="showSection('view-clientes')" class="btn" style="background:none; color:#666">Cancelar</button>
       </div>
     </section>
   </main>
 
-  <footer>YISUS PERFUMES &copy; 2026 | Morelia, México</footer>
-
   <script>
-    // --- CONFIGURACIÓN DE FIREBASE ---
     const firebaseConfig = {
       apiKey: "AIzaSyBOPGjmY-qdUPaxAMok5NBPs48vVdUy6wU",
       authDomain: "yisus-perfumes.firebaseapp.com",
@@ -124,39 +98,33 @@
       projectId: "yisus-perfumes",
       storageBucket: "yisus-perfumes.firebasestorage.app",
       messagingSenderId: "652179258043",
-      appId: "1:652179258043:web:f844308a8fda19fbce079e",
-      measurementId: "G-X72885BG35"
+      appId: "1:652179258043:web:f844308a8fda19fbce079e"
     };
 
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database().ref("productos");
-
     let isAdmin = false;
-    let currentFilter = 'todos';
     let rawData = {};
+    let currentFilter = 'todos';
 
-    // Navegación entre "ventanas"
+    const menu = document.getElementById("dropdown-menu");
+    document.getElementById("menu-trigger").onclick = (e) => { e.stopPropagation(); menu.classList.toggle("show"); };
+    document.onclick = () => menu.classList.remove("show");
+
     function showSection(id) {
         document.querySelectorAll('main > section').forEach(s => s.classList.add('hidden'));
         document.getElementById(id).classList.remove('hidden');
     }
 
-    // Menú dropdown
-    const menu = document.getElementById("dropdown-menu");
-    document.getElementById("menu-trigger").onclick = (e) => { e.stopPropagation(); menu.classList.toggle("show"); };
-    document.onclick = () => menu.classList.remove("show");
-
     function accesoVendedor() {
         if(isAdmin) return showSection('view-vendedor');
-        if(prompt("Contraseña de vendedor:") === "Yisus_2637422") {
+        if(prompt("Clave:") === "Yisus_2637422") {
             isAdmin = true;
             document.getElementById("nav-logout").classList.remove("hidden");
             showSection('view-vendedor');
-            render(rawData); 
-        } else { alert("Acceso denegado"); }
+        }
     }
 
-    // Filtros de categoría
     function filterData(cat, btn) {
         currentFilter = cat;
         document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
@@ -164,7 +132,6 @@
         render(rawData);
     }
 
-    // Escuchar cambios en la nube
     db.on("value", (snapshot) => {
         rawData = snapshot.val() || {};
         render(rawData);
@@ -173,67 +140,75 @@
     function render(data) {
         const container = document.getElementById("catalog");
         container.innerHTML = "";
-        
         Object.keys(data).forEach((id) => {
             const p = data[id];
-            
-            // Lógica de filtrado
             if(currentFilter !== 'todos' && p.gender !== currentFilter) return;
-
             const card = document.createElement("div");
             card.className = "product";
             card.innerHTML = `
                 <div class="img-box"><img src="${p.img}"></div>
                 <div class="info">
-                    <small style="color:var(--accent); font-weight:bold; letter-spacing:1px">${p.gender.toUpperCase()}</small>
-                    <h3 style="margin:5px 0">${p.name}</h3>
-                    <div style="font-size:1.4rem; font-weight:600; margin-bottom:10px">$${Number(p.price).toLocaleString()}</div>
-                    ${isAdmin ? 
-                        `<button class="btn btn-del" onclick="eliminarProducto('${id}')"><i class="fa-solid fa-trash"></i> Eliminar Producto</button>` : 
-                        `<a href="https://wa.me/4436965926?text=Hola! Me interesa la fragancia: ${p.name}" class="btn btn-ws" target="_blank"><i class="fa-brands fa-whatsapp"></i> Comprar ahora</a>`
-                    }
+                    <small style="color:var(--accent)">${p.gender.toUpperCase()}</small>
+                    <h3>${p.name}</h3>
+                    <div style="font-size:1.4rem; font-weight:bold">$${p.price}</div>
+                    ${isAdmin ? `<button class="btn" style="background:var(--danger)" onclick="eliminar('${id}')">Eliminar</button>` : 
+                    `<a href="https://wa.me/4436965926?text=Me+interesa+${p.name}" class="btn" style="background:var(--whatsapp)">WhatsApp</a>`}
                 </div>`;
             container.appendChild(card);
         });
     }
 
-    // Subir a la nube
-    function subirTienda() {
+    // --- FUNCIÓN ANTITRABADO: COMPRIME LA IMAGEN ANTES DE SUBIR ---
+    function procesarYSubir() {
         const file = document.getElementById("p-img").files[0];
-        const name = document.getElementById("p-name").value;
-        const price = document.getElementById("p-price").value;
-
-        if(!file || !name || !price) return alert("Rellena nombre, precio y selecciona una foto.");
+        if(!file) return alert("Selecciona una foto");
+        
+        document.getElementById("loading-overlay").classList.remove("hidden");
 
         const reader = new FileReader();
-        reader.onload = (e) => {
-            const nuevo = {
-                name: name,
-                price: price,
-                gender: document.getElementById("p-gender").value,
-                desc: document.getElementById("p-desc").value,
-                img: e.target.result
-            };
-            db.push(nuevo).then(() => {
-                alert("¡Fragancia publicada!");
-                resetForm();
-                showSection('view-clientes');
-            });
-        };
         reader.readAsDataURL(file);
+        reader.onload = function (event) {
+            const img = new Image();
+            img.src = event.target.result;
+            img.onload = function () {
+                const canvas = document.createElement("canvas");
+                const MAX_WIDTH = 800; // Reducimos el tamaño para que no se trabe
+                const scaleSize = MAX_WIDTH / img.width;
+                canvas.width = MAX_WIDTH;
+                canvas.height = img.height * scaleSize;
+
+                const ctx = canvas.getContext("2d");
+                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+                // Comprimimos la calidad al 70%
+                const dataUrl = canvas.toDataURL("image/jpeg", 0.7);
+                
+                subirAFirebase(dataUrl);
+            };
+        };
     }
 
-    function eliminarProducto(id) {
-        if(confirm("¿Eliminar este perfume permanentemente del catálogo?")) {
-            db.child(id).remove();
-        }
+    function subirAFirebase(imgFinal) {
+        const nuevo = {
+            name: document.getElementById("p-name").value,
+            price: document.getElementById("p-price").value,
+            gender: document.getElementById("p-gender").value,
+            desc: document.getElementById("p-desc").value,
+            img: imgFinal
+        };
+
+        db.push(nuevo).then(() => {
+            document.getElementById("loading-overlay").classList.add("hidden");
+            alert("¡Publicado!");
+            showSection('view-clientes');
+        }).catch(err => {
+            alert("Error al subir");
+            document.getElementById("loading-overlay").classList.add("hidden");
+        });
     }
 
-    function resetForm() {
-        document.getElementById("p-name").value = "";
-        document.getElementById("p-price").value = "";
-        document.getElementById("p-desc").value = "";
-        document.getElementById("p-img").value = "";
+    function eliminar(id) {
+        if(confirm("¿Eliminar?")) db.child(id).remove();
     }
   </script>
 </body>
